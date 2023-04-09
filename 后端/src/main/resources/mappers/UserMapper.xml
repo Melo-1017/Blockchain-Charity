@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neu.mybatisdemo1.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.neu.mybatisdemo1.entity.User">
+            <id property="userId" column="userId" jdbcType="INTEGER"/>
+            <result property="userName" column="userName" jdbcType="VARCHAR"/>
+            <result property="userGender" column="userGender" jdbcType="INTEGER"/>
+            <result property="userAge" column="userAge" jdbcType="INTEGER"/>
+            <result property="userRoleId" column="userRoleId" jdbcType="INTEGER"/>
+            <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
+            <result property="userEmail" column="userEmail" jdbcType="VARCHAR"/>
+            <result property="userPhone" column="userPhone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        userId,userName,userGender,
+        userAge,userRoleId,userPassword,userEmail,userPhone
+    </sql>
+
+     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where  userId = #{userid,jdbcType=INTEGER} 
+    </select>
+<!--新增search函数用作分页条件查找-->
+    <select id="search" resultType="com.neu.mybatisdemo1.entity.User">
+        select * from user where userName like #{userName}
+        <if test="userRoleId != -1">
+            and userRoleId = #{userRoleId}
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user
+        where  userId = #{userid,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="userId" keyProperty="userId" parameterType="com.neu.mybatisdemo1.entity.User" useGeneratedKeys="true">
+        insert into user
+        ( userId,userName,userGender
+        ,userAge,userRoleId,userPassword,userEmail,userPhone
+        )
+        values (#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},#{userGender,jdbcType=INTEGER}
+        ,#{userAge,jdbcType=INTEGER},#{userRoleId,jdbcType=INTEGER},#{userPassword,jdbcType=VARCHAR},#{userEmail,jdbcType=VARCHAR},#{userPhone,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="userId" keyProperty="userId" parameterType="com.neu.mybatisdemo1.entity.User" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="userid != null">userId,</if>
+                <if test="username != null">userName,</if>
+                <if test="usergender != null">userGender,</if>
+                <if test="userage != null">userAge,</if>
+                <if test="userroleid != null">userRoleId,</if>
+                <if test="userpassword != null">userPassword,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="userid != null">#{userid,jdbcType=INTEGER},</if>
+                <if test="username != null">#{username,jdbcType=VARCHAR},</if>
+                <if test="usergender != null">#{usergender,jdbcType=INTEGER},</if>
+                <if test="userage != null">#{userage,jdbcType=INTEGER},</if>
+                <if test="userroleid != null">#{userroleid,jdbcType=INTEGER},</if>
+                <if test="userpassword != null">#{userpassword,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.neu.mybatisdemo1.entity.User">
+        update user
+        <set>
+                <if test="username != null">
+                    userName = #{username,jdbcType=VARCHAR},
+                </if>
+                <if test="usergender != null">
+                    userGender = #{usergender,jdbcType=INTEGER},
+                </if>
+                <if test="userage != null">
+                    userAge = #{userage,jdbcType=INTEGER},
+                </if>
+                <if test="userroleid != null">
+                    userRoleId = #{userroleid,jdbcType=INTEGER},
+                </if>
+                <if test="userpassword != null">
+                    userPassword = #{userpassword,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   userId = #{userid,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.neu.mybatisdemo1.entity.User">
+        update user
+        set 
+            userName =  #{userName,jdbcType=VARCHAR},
+            userGender =  #{userGender,jdbcType=INTEGER},
+            userAge =  #{userAge,jdbcType=INTEGER},
+            userRoleId =  #{userRoleId,jdbcType=INTEGER},
+            userPassword =  #{userPassword,jdbcType=VARCHAR},
+            userEmail = #{userEmail,jdbcType=VARCHAR},
+            userPhone = #{userPhone,jdbcType=VARCHAR}
+        where   userId = #{userId,jdbcType=INTEGER}
+    </update>
+     <select id="login" resultType ="com.neu.mybatisdemo1.entity.User">
+    select * from user where userName = #{userName} and userPassword = #{userPassword}
+</select>
+</mapper>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neu.mybatisdemo1.mapper.HelplistMapper">
+
+    <resultMap id="BaseResultMap" type="com.neu.mybatisdemo1.entity.Helplist">
+            <id property="listId" column="listId" jdbcType="INTEGER"/>
+            <result property="donationState" column="donationState" jdbcType="INTEGER"/>
+            <result property="recipientId" column="recipientId" jdbcType="INTEGER"/>
+            <result property="giverId" column="giverId" jdbcType="INTEGER"/>
+            <result property="donationDemand" column="donationDemand" jdbcType="VARCHAR"/>
+            <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+            <result property="finishDate" column="finishDate" jdbcType="TIMESTAMP"/>
+            <result property="logisticsInformation" column="logisticsInformation" jdbcType="VARCHAR"/>
+            <result property="recipientResponse" column="recipientResponse" jdbcType="VARCHAR"/>
+            <result property="projectOrganizer" column="projectOrganizer" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    
+    <resultMap id="NewIdMap" type="com.neu.mybatisdemo1.entity.Helplist">
+        <id column="max(listId)" property="listId" jdbcType="INTEGER"></id>
+    </resultMap>
+
+
+
+    <sql id="Base_Column_List">
+        listId,donationState,recipientId,
+        giverId,donationDemand,createDate,
+        finishDate,logisticsInformation,recipientResponse,projectOrganizer
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from helplist
+        where  listId = #{listid,jdbcType=INTEGER} 
+    </select>
+
+    <select id="getNewId" resultType="com.neu.mybatisdemo1.entity.Helplist">
+        select * from helplist
+        where listId = (select max(listId) from helplist)
+    </select>
+
+    <select id="search" resultType="com.neu.mybatisdemo1.entity.Helplist">
+        select * from helplist where helplist.donationDemand like #{donationDemand}
+        <if test="donationState != 2">
+            and donationState = #{donationState}
+        </if>
+
+    </select>
+
+    <select id="searchByGiverId" resultType="com.neu.mybatisdemo1.entity.Helplist">
+        select * from helplist where giverId = #{giverId}
+    </select>
+
+    <select id="searchByRecipientId" resultType="com.neu.mybatisdemo1.entity.Helplist">
+        select * from helplist where recipientId = #{recipientId}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from helplist
+        where  listId = #{listid,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="listId" keyProperty="listId" parameterType="com.neu.mybatisdemo1.entity.Helplist" useGeneratedKeys="true">
+        insert into helplist
+        ( listId,donationState,recipientId
+        ,giverId,donationDemand,createDate
+        ,finishDate,logisticsInformation,recipientResponse,projectOrganizer
+        )
+        values (#{listId,jdbcType=INTEGER},#{donationState,jdbcType=INTEGER},#{recipientId,jdbcType=INTEGER}
+        ,#{giverId,jdbcType=INTEGER},#{donationDemand,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP}
+        ,#{finishDate,jdbcType=TIMESTAMP},#{logisticsInformation,jdbcType=VARCHAR},#{recipientResponse,jdbcType=VARCHAR},#{projectOrganizer,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="listId" keyProperty="listId" parameterType="com.neu.mybatisdemo1.entity.Helplist" useGeneratedKeys="true">
+        insert into helplist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="listid != null">listId,</if>
+                <if test="donationstate != null">donationState,</if>
+                <if test="recipientid != null">recipientId,</if>
+                <if test="giverid != null">giverId,</if>
+                <if test="donationdemand != null">donationDemand,</if>
+                <if test="createdate != null">createDate,</if>
+                <if test="finishdate != null">finishDate,</if>
+                <if test="logisticsinformation != null">logisticsInformation,</if>
+                <if test="recipientresponse != null">recipientResponse,</if>
+                <if test="projectOrganizer != null">projectOrganizer,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="listid != null">#{listid,jdbcType=INTEGER},</if>
+                <if test="donationstate != null">#{donationstate,jdbcType=INTEGER},</if>
+                <if test="recipientid != null">#{recipientid,jdbcType=INTEGER},</if>
+                <if test="giverid != null">#{giverid,jdbcType=INTEGER},</if>
+                <if test="donationdemand != null">#{donationdemand,jdbcType=VARCHAR},</if>
+                <if test="createdate != null">#{createdate,jdbcType=TIMESTAMP},</if>
+                <if test="finishdate != null">#{finishdate,jdbcType=TIMESTAMP},</if>
+                <if test="logisticsinformation != null">#{logisticsinformation,jdbcType=VARCHAR},</if>
+                <if test="recipientresponse != null">#{recipientresponse,jdbcType=VARCHAR},</if>
+                <if test="projectOrganizer != null">#{projectOrganizer,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.neu.mybatisdemo1.entity.Helplist">
+        update helplist
+        <set>
+                <if test="donationstate != null">
+                    donationState = #{donationstate,jdbcType=INTEGER},
+                </if>
+                <if test="recipientid != null">
+                    recipientId = #{recipientid,jdbcType=INTEGER},
+                </if>
+                <if test="giverid != null">
+                    giverId = #{giverid,jdbcType=INTEGER},
+                </if>
+                <if test="donationdemand != null">
+                    donationDemand = #{donationdemand,jdbcType=VARCHAR},
+                </if>
+                <if test="createdate != null">
+                    createDate = #{createdate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="finishdate != null">
+                    finishDate = #{finishdate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="logisticsinformation != null">
+                    logisticsInformation = #{logisticsinformation,jdbcType=VARCHAR},
+                </if>
+                <if test="recipientresponse != null">
+                    recipientResponse = #{recipientresponse,jdbcType=VARCHAR},
+                </if>
+                <if test="projectOrganizer != null">
+                    projectOrganizer = #{projectOrganizer,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   listId = #{listid,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.neu.mybatisdemo1.entity.Helplist">
+        update helplist
+        set 
+            donationState =  #{donationState,jdbcType=INTEGER},
+            recipientId =  #{recipientId,jdbcType=INTEGER},
+            giverId =  #{giverId,jdbcType=INTEGER},
+            donationDemand =  #{donationDemand,jdbcType=VARCHAR},
+            createDate =  #{createDate,jdbcType=VARCHAR},
+            finishDate =  #{finishDate,jdbcType=VARCHAR},
+            logisticsInformation =  #{logisticsInformation,jdbcType=VARCHAR},
+            recipientResponse =  #{recipientResponse,jdbcType=VARCHAR},
+            projectOrganizer =  #{projectOrganizer,jdbcType=VARCHAR}
+        where   listId = #{listId,jdbcType=INTEGER}
+    </update>
+</mapper>

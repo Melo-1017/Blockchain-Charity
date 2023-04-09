@@ -1,0 +1,13 @@
+com\neu\mybatisdemo1\service\impl\HelplistServiceImpl.class
+com\neu\mybatisdemo1\mapper\UserMapper.class
+com\neu\mybatisdemo1\mapper\HelplistMapper.class
+com\neu\mybatisdemo1\service\UserService.class
+com\neu\mybatisdemo1\service\HelplistService.class
+com\neu\mybatisdemo1\service\impl\UserServiceImpl.class
+com\neu\mybatisdemo1\controller\HelplistController.class
+com\neu\mybatisdemo1\entity\User.class
+com\neu\mybatisdemo1\entity\Result.class
+com\neu\mybatisdemo1\Mybatisdemo1Application.class
+com\neu\mybatisdemo1\CorsConfig.class
+com\neu\mybatisdemo1\controller\UserController.class
+com\neu\mybatisdemo1\entity\Helplist.class

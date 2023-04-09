@@ -1,0 +1,10 @@
+{
+  "name": "后端",
+  "version": "1.0.0",
+  "dependencies": {
+    "web3": "^1.2.11"
+  },
+  "devDependencies": {
+    "web3-eth-personal": "^1.7.5"
+  }
+}
